@@ -8,11 +8,13 @@ namespace WpfProject.Data.Dao
 {
     public interface OrderDetailDao
     {
-        public void insert(OrderDetail orderDetail);
-        public void update(OrderDetail orderDetail);
-        public List<OrderDetail> findAll();
-        public int count();
-        public OrderDetail findById(int id);
-        public void deleteById(int id);
+          void insert(OrderDetail orderDetail);
+          void update(OrderDetail orderDetail);
+          List<OrderDetail> findAll();
+          List<OrderDetail> findByOrder(int orderId);
+          int count();
+          OrderDetail findById(int id);
+
+          void deleteById(int id);
     }
 }

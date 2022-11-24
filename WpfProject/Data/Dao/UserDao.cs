@@ -8,13 +8,14 @@ namespace WpfProject.Data.Dao
 {
     public interface UserDao
     {
-        public void insert(User user);
-        public void update(User user);
-        public List<User> findAll();
-        public int count();
-        public User findById(int id);
-        public void deleteById(int id);
+          void insert(User user);
+          void update(User user);
+          List<User> findAll();
+          int count();
+          User findById(int id);
+          void deleteById(int id);
 
-        public User find(string phone, string password);
+          User find(string phone, string password);
+        //User find(string name, string phone, string password, string role);
     }
 }

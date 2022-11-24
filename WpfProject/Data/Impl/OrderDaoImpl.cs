@@ -17,6 +17,13 @@ namespace WpfProject.Data.Impl
             db = new DBDataContext(Constants.DB_CONNECT_STRING);
         }
 
+        public bool checkEmpty(int id)
+        {
+            var query = from order in db.GetTable<OrderDetail>() where order.OrderId == id  select order;
+            List<OrderDetail> orderList = query.ToList<OrderDetail>();
+            return orderList.Count() == 0 ? true : false;
+        }
+
         public int count()
         {
             var query = from order in db.GetTable<Order>() select order;

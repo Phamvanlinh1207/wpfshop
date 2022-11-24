@@ -5,41 +5,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using WpfProject.Data.Dao;
 
 namespace WpfProject.ViewModels
 {
     public class CreateCategoryViewModel : ViewModelBase
     {
-        private String _email;
-        private String _password;
-        public ICommand CreateCategoryCommand { get; }
+        private String _name;
+        private String _description;
 
+        public ICommand CreateCategoryCommand { get; }
         public CreateCategoryViewModel()
         {
             CreateCategoryCommand = new ViewModelCommand(ExecuteCreateCategoryCommand);
         }
-
         private void ExecuteCreateCategoryCommand(object obj)
         {
-            MessageBox.Show(Email);
-        }
+            Category category = new Category();
+            category.Name = _name;
+            category.Description = _description;
 
-        public string Email
+            CategoryDao categoryDao = DataDao.Instance().GetCategoryDao();
+            categoryDao.insert(category);
+
+        }
+        public string Name
         {
-            get => _email;
+            get => _name;
             set
             {
-                _email = value;
-                OnPropertyChanged(nameof(Email));
+                _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
-        public string Password
+        public string Description
         {
-            get => _password;
+            get => _description;
             set
             {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
+                _description = value;
+                OnPropertyChanged(nameof(Description));
             }
         }
     }

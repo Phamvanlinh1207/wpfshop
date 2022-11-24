@@ -9,11 +9,11 @@ namespace WpfProject.Data.Dao
 {
     public interface CategoryDao
     {
-        public void insert(Category category);
-        public void update(Category category);
-        public List<Category> findAll();
-        public int count();
-        public Category findById(int id);
-        public void deleteById(int id);
+         void insert(Category category);
+         void update(Category category);
+         List<Category> findAll();
+         int count();
+         Category findById(int id);
+         void deleteById(int id);
     }
 }

@@ -8,11 +8,14 @@ namespace WpfProject.Data.Dao
 {
     public interface ProductDao
     {
-        public void insert(Product product);
-        public void update(Product product);
-        public List<Product> findAll();
-        public int count();
-        public Product findById(int id);
-        public void deleteById(int id);
+          void insert(Product product);
+          void update(Product product);
+          List<Product> findAll();
+        List<Product> searchByName(String name);
+
+        int count();
+          Product findById(int id);
+
+          void deleteById(int id);
     }
 }

@@ -11,18 +11,18 @@
 
 namespace WpfProject
 {
-    using System.Data.Linq;
-    using System.Data.Linq.Mapping;
-    using System.Data;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.ComponentModel;
-    using System;
-
-
-    [global::System.Data.Linq.Mapping.DatabaseAttribute(Name = "phi1")]
+	using System.Data.Linq;
+	using System.Data.Linq.Mapping;
+	using System.Data;
+	using System.Collections.Generic;
+	using System.Reflection;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.ComponentModel;
+	using System;
+	
+	
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="DrugnStore")]
     public partial class DBDataContext : System.Data.Linq.DataContext
     {
 
@@ -144,7 +144,7 @@ namespace WpfProject
             OnCreated();
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", DbType = "Int NOT NULL", IsPrimaryKey = true)]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", AutoSync = AutoSync.OnInsert, DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id
         {
             get
@@ -258,9 +258,13 @@ namespace WpfProject
 
         private int _Id;
 
+        private string _Name;
+
         private string _Phone;
 
         private string _Password;
+
+        private string _Role;
 
         private EntitySet<Order> _Orders;
 
@@ -270,10 +274,14 @@ namespace WpfProject
         partial void OnCreated();
         partial void OnIdChanging(int value);
         partial void OnIdChanged();
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
         partial void OnPhoneChanging(string value);
         partial void OnPhoneChanged();
         partial void OnPasswordChanging(string value);
         partial void OnPasswordChanged();
+        partial void OnRoleChanging(string value);
+        partial void OnRoleChanged();
         #endregion
 
         public User()
@@ -282,7 +290,7 @@ namespace WpfProject
             OnCreated();
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", DbType = "Int NOT NULL", IsPrimaryKey = true)]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", AutoSync = AutoSync.OnInsert, DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id
         {
             get
@@ -298,6 +306,26 @@ namespace WpfProject
                     this._Id = value;
                     this.SendPropertyChanged("Id");
                     this.OnIdChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Name", DbType = "NVarChar(208) NOT NULL", CanBeNull = false)]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                if ((this._Name != value))
+                {
+                    this.OnNameChanging(value);
+                    this.SendPropertyChanging();
+                    this._Name = value;
+                    this.SendPropertyChanged("Name");
+                    this.OnNameChanged();
                 }
             }
         }
@@ -338,6 +366,26 @@ namespace WpfProject
                     this._Password = value;
                     this.SendPropertyChanged("Password");
                     this.OnPasswordChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Role", DbType = "NChar(10) NOT NULL", CanBeNull = false)]
+        public string Role
+        {
+            get
+            {
+                return this._Role;
+            }
+            set
+            {
+                if ((this._Role != value))
+                {
+                    this.OnRoleChanging(value);
+                    this.SendPropertyChanging();
+                    this._Role = value;
+                    this.SendPropertyChanged("Role");
+                    this.OnRoleChanged();
                 }
             }
         }
@@ -402,6 +450,11 @@ namespace WpfProject
 
         private int _UserId;
 
+        public static string ORDER_STATUS_EMPTY = "EMPTY";
+        public static string ORDER_STATUS_NOT_EMPTY = "NOT EMPTY";
+
+        private EntitySet<OrderDetail> _OrderDetails;
+
         private EntityRef<User> _User;
 
         #region Extensibility Method Definitions
@@ -420,11 +473,12 @@ namespace WpfProject
 
         public Order()
         {
+            this._OrderDetails = new EntitySet<OrderDetail>(new Action<OrderDetail>(this.attach_OrderDetails), new Action<OrderDetail>(this.detach_OrderDetails));
             this._User = default(EntityRef<User>);
             OnCreated();
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", DbType = "Int NOT NULL", IsPrimaryKey = true)]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", AutoSync = AutoSync.OnInsert, DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id
         {
             get
@@ -508,6 +562,19 @@ namespace WpfProject
             }
         }
 
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Order_OrderDetail", Storage = "_OrderDetails", ThisKey = "Id", OtherKey = "OrderId")]
+        public EntitySet<OrderDetail> OrderDetails
+        {
+            get
+            {
+                return this._OrderDetails;
+            }
+            set
+            {
+                this._OrderDetails.Assign(value);
+            }
+        }
+
         [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "User_Order", Storage = "_User", ThisKey = "UserId", OtherKey = "Id", IsForeignKey = true)]
         public User User
         {
@@ -561,6 +628,18 @@ namespace WpfProject
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        private void attach_OrderDetails(OrderDetail entity)
+        {
+            this.SendPropertyChanging();
+            entity.Order = this;
+        }
+
+        private void detach_OrderDetails(OrderDetail entity)
+        {
+            this.SendPropertyChanging();
+            entity.Order = null;
+        }
     }
 
     [global::System.Data.Linq.Mapping.TableAttribute(Name = "dbo.OrderDetail")]
@@ -571,13 +650,15 @@ namespace WpfProject
 
         private int _Id;
 
-        private string _OrderCode;
-
         private int _ProductId;
 
         private int _Quantity;
 
         private decimal _Price;
+
+        private System.Nullable<int> _OrderId;
+
+        private EntityRef<Order> _Order;
 
         private EntityRef<Product> _Product;
 
@@ -587,23 +668,24 @@ namespace WpfProject
         partial void OnCreated();
         partial void OnIdChanging(int value);
         partial void OnIdChanged();
-        partial void OnOrderCodeChanging(string value);
-        partial void OnOrderCodeChanged();
         partial void OnProductIdChanging(int value);
         partial void OnProductIdChanged();
         partial void OnQuantityChanging(int value);
         partial void OnQuantityChanged();
         partial void OnPriceChanging(decimal value);
         partial void OnPriceChanged();
+        partial void OnOrderIdChanging(System.Nullable<int> value);
+        partial void OnOrderIdChanged();
         #endregion
 
         public OrderDetail()
         {
+            this._Order = default(EntityRef<Order>);
             this._Product = default(EntityRef<Product>);
             OnCreated();
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", DbType = "Int NOT NULL", IsPrimaryKey = true)]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", AutoSync = AutoSync.OnInsert, DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id
         {
             get
@@ -619,26 +701,6 @@ namespace WpfProject
                     this._Id = value;
                     this.SendPropertyChanged("Id");
                     this.OnIdChanged();
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_OrderCode", DbType = "NChar(10) NOT NULL", CanBeNull = false)]
-        public string OrderCode
-        {
-            get
-            {
-                return this._OrderCode;
-            }
-            set
-            {
-                if ((this._OrderCode != value))
-                {
-                    this.OnOrderCodeChanging(value);
-                    this.SendPropertyChanging();
-                    this._OrderCode = value;
-                    this.SendPropertyChanged("OrderCode");
-                    this.OnOrderCodeChanged();
                 }
             }
         }
@@ -703,6 +765,64 @@ namespace WpfProject
                     this._Price = value;
                     this.SendPropertyChanged("Price");
                     this.OnPriceChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_OrderId", DbType = "Int")]
+        public System.Nullable<int> OrderId
+        {
+            get
+            {
+                return this._OrderId;
+            }
+            set
+            {
+                if ((this._OrderId != value))
+                {
+                    if (this._Order.HasLoadedOrAssignedValue)
+                    {
+                        throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+                    }
+                    this.OnOrderIdChanging(value);
+                    this.SendPropertyChanging();
+                    this._OrderId = value;
+                    this.SendPropertyChanged("OrderId");
+                    this.OnOrderIdChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name = "Order_OrderDetail", Storage = "_Order", ThisKey = "OrderId", OtherKey = "Id", IsForeignKey = true)]
+        public Order Order
+        {
+            get
+            {
+                return this._Order.Entity;
+            }
+            set
+            {
+                Order previousValue = this._Order.Entity;
+                if (((previousValue != value)
+                            || (this._Order.HasLoadedOrAssignedValue == false)))
+                {
+                    this.SendPropertyChanging();
+                    if ((previousValue != null))
+                    {
+                        this._Order.Entity = null;
+                        previousValue.OrderDetails.Remove(this);
+                    }
+                    this._Order.Entity = value;
+                    if ((value != null))
+                    {
+                        value.OrderDetails.Add(this);
+                        this._OrderId = value.Id;
+                    }
+                    else
+                    {
+                        this._OrderId = default(Nullable<int>);
+                    }
+                    this.SendPropertyChanged("Order");
                 }
             }
         }
@@ -772,11 +892,13 @@ namespace WpfProject
 
         private string _Name;
 
-        private System.Nullable<int> _Quantity;
+        private decimal _Price;
 
-        private System.Nullable<decimal> _Price;
+        private int _Quantity;
 
         private System.Nullable<int> _CategoryId;
+
+        private string _Description;
 
         private EntitySet<OrderDetail> _OrderDetails;
 
@@ -790,12 +912,14 @@ namespace WpfProject
         partial void OnIdChanged();
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
-        partial void OnQuantityChanging(System.Nullable<int> value);
-        partial void OnQuantityChanged();
         partial void OnPriceChanging(System.Nullable<decimal> value);
         partial void OnPriceChanged();
+        partial void OnQuantityChanging(System.Nullable<int> value);
+        partial void OnQuantityChanged();
         partial void OnCategoryIdChanging(System.Nullable<int> value);
         partial void OnCategoryIdChanged();
+        partial void OnDescriptionChanging(string value);
+        partial void OnDescriptionChanged();
         #endregion
 
         public Product()
@@ -805,7 +929,7 @@ namespace WpfProject
             OnCreated();
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", DbType = "Int NOT NULL", IsPrimaryKey = true)]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Id", AutoSync = AutoSync.OnInsert, DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
         public int Id
         {
             get
@@ -845,28 +969,8 @@ namespace WpfProject
             }
         }
 
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Quantity", DbType = "Int")]
-        public System.Nullable<int> Quantity
-        {
-            get
-            {
-                return this._Quantity;
-            }
-            set
-            {
-                if ((this._Quantity != value))
-                {
-                    this.OnQuantityChanging(value);
-                    this.SendPropertyChanging();
-                    this._Quantity = value;
-                    this.SendPropertyChanged("Quantity");
-                    this.OnQuantityChanged();
-                }
-            }
-        }
-
         [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Price", DbType = "Decimal(8,0)")]
-        public System.Nullable<decimal> Price
+        public decimal Price
         {
             get
             {
@@ -881,6 +985,26 @@ namespace WpfProject
                     this._Price = value;
                     this.SendPropertyChanged("Price");
                     this.OnPriceChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Quantity", DbType = "Int")]
+        public int Quantity
+        {
+            get
+            {
+                return this._Quantity;
+            }
+            set
+            {
+                if ((this._Quantity != value))
+                {
+                    this.OnQuantityChanging(value);
+                    this.SendPropertyChanging();
+                    this._Quantity = value;
+                    this.SendPropertyChanged("Quantity");
+                    this.OnQuantityChanged();
                 }
             }
         }
@@ -905,6 +1029,26 @@ namespace WpfProject
                     this._CategoryId = value;
                     this.SendPropertyChanged("CategoryId");
                     this.OnCategoryIdChanged();
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Description", DbType = "NVarChar(1028)")]
+        public string Description
+        {
+            get
+            {
+                return this._Description;
+            }
+            set
+            {
+                if ((this._Description != value))
+                {
+                    this.OnDescriptionChanging(value);
+                    this.SendPropertyChanging();
+                    this._Description = value;
+                    this.SendPropertyChanged("Description");
+                    this.OnDescriptionChanged();
                 }
             }
         }
