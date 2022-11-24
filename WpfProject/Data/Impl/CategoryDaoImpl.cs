@@ -2,8 +2,7 @@
 using WpfProject.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
+using System.Linq; 
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +17,8 @@ namespace WpfProject.Data.Impl
         }
         public int count()
         {
-            var query = from category in db.GetTable<Category>() select category;
-            List<Category> categoryList = query.ToList<Category>();
-            return categoryList.Count();
+            var CategoryList = (List<Category>)from Category in db.GetTable<Category>() select Category;
+            return CategoryList.Count();
         }
 
         public void deleteById(int id)
@@ -32,8 +30,8 @@ namespace WpfProject.Data.Impl
 
         public List<Category> findAll()
         {
-            var all = from category in db.GetTable<Category>() select category;
-            var categoryList = all.ToList();
+            var query = from Category in db.GetTable<Category>() select Category;
+            List<Category> categoryList = query.ToList<Category>();
             return categoryList;
         }
 
@@ -47,7 +45,6 @@ namespace WpfProject.Data.Impl
             db.Categories.InsertOnSubmit(category);
             db.SubmitChanges();
         }
-
         public void update(Category category)
         {
             Category find = db.Categories.Single(c => c.Id == category.Id);

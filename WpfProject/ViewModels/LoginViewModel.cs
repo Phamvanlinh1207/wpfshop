@@ -6,12 +6,27 @@ using WpfProject.Data.Dao;
 
 namespace WpfProject.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : ViewModelBase
     {
-        public ICommand LoginCommand { get; }
+
         private string _phone;
         private string _password;
+
+        private string _errorMessage;
+
         private bool _isErrorVisible = false;
+
+        public ICommand LoginCommand { get; }
+        private Visibility _IsVisible;
+        public Visibility IsVisible
+        {
+            get { return _IsVisible; }
+            set
+            {
+                _IsVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+            }
+        }
 
         public LoginViewModel()
         {
@@ -25,13 +40,13 @@ namespace WpfProject.ViewModels
 
         private void ExecuteLoginCommand(object obj)
         {
-            DataDao.init(new SqlServerDataDao());
             UserDao userDao = DataDao.Instance().GetUserDao();
             User user = userDao.find(Phone, Password);
-            if(user != null)
+            if (user != null )
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
+                IsVisible = Visibility.Hidden;
             }
             else
             {
@@ -48,11 +63,14 @@ namespace WpfProject.ViewModels
                 OnPropertyChanged(nameof(Phone));
             }
         }
-        public string Password { get { return _password; } 
-            set { 
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
-            } 
+            }
         }
 
         public bool IsErrorVisible
@@ -64,5 +82,19 @@ namespace WpfProject.ViewModels
                 OnPropertyChanged(nameof(IsErrorVisible));
             }
         }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+
     }
 }

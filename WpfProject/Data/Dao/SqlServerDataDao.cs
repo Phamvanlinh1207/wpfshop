@@ -14,6 +14,16 @@ namespace WpfProject.Data.Dao
             return new CategoryDaoImpl();
         }
 
+        public override OrderDao GetOrderDao()
+        {
+            return new OrderDaoImpl();
+        }
+
+        public override OrderDetailDao GetOrderDetailDao()
+        {
+            return new OrderDetailImpl();
+        }
+
         public override ProductDao GetProductDao()
         {
             return new ProductDaoImpl();

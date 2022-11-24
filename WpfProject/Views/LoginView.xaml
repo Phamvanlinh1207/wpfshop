@@ -3,35 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:components="clr-namespace:WpfProject.Components"
         xmlns:local="clr-namespace:WpfProject.Views"
-        xmlns:vm="clr-namespace:WpfProject.ViewModels" 
+        xmlns:vm="clr-namespace:WpfProject.ViewModels"
         mc:Ignorable="d"
-        Title="LoginView" Height="450" Width="600"
+        Title="LoginView" Height="400" Width="660"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
+        Visibility="{Binding IsVisible, Mode=TwoWay}"
         MouseDown="Window_MouseDown">
     <Window.DataContext>
         <vm:LoginViewModel/>
     </Window.DataContext>
-    <Border CornerRadius="10">
-
-        <Border CornerRadius="10"
-            BorderThickness="2"
-            Opacity="0.85">
+    <Border CornerRadius="12">
+        <Border CornerRadius="12"
+            BorderThickness="3">
             <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="White" Offset="0"></GradientStop>
-                    <GradientStop Color="White" Offset="0.75"></GradientStop>
-                    <GradientStop Color="White" Offset="1"></GradientStop>
+                <LinearGradientBrush StartPoint="0,2" EndPoint="1,1">
+                    <GradientStop Color="#F27405" Offset="0.5"></GradientStop>
+                    <GradientStop Color="#402D22" Offset="0.75"></GradientStop>
+                    <GradientStop Color="#D96725" Offset="1"></GradientStop>
                 </LinearGradientBrush>
             </Border.BorderBrush>
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="White" Offset="0.75 "></GradientStop>
-                    <GradientStop Color="#FF307CD6" Offset="0.2"></GradientStop>
+                    <GradientStop Color="#591902" Offset="0 "></GradientStop>
+                    <GradientStop Color="#402D22" Offset="0.75"></GradientStop>
                 </LinearGradientBrush>
             </Border.Background>
             <Grid>
@@ -47,8 +47,8 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Đăng Nhập"
-                               Foreground="Black"
-                               FontSize="15"
+                               Foreground="AliceBlue"
+                               FontSize="10"
                                FontFamily="Montserrat"
                                Grid.Column="0"
                                VerticalAlignment="Center"
@@ -56,17 +56,18 @@
                     <Button x:Name="btnMinimize"
                             BorderThickness="0"
                             Content="-"
-                            Foreground="White"
+                            Foreground="#591902"
                             FontSize="16"
                             FontFamily="Montserrat"
                             Cursor="Hand"
-                            Grid.Column="1">
+                            Grid.Column="1"
+                            Click="btnMinimize_Click">
                         <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Background" Value="#4e8ad3"/>
+                            <Style TargetType="Button">        
+                                <Setter Property="Background" Value="#fff"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#236dc9"/>
+                                        <Setter Property="Background" Value="blue"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -83,17 +84,18 @@
                     <Button x:Name="btnClose"
                             BorderThickness="0"
                             Content="x"
-                            Foreground="Beige"
+                            Foreground="#591902"
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
-                            Grid.Column="2">
+                            Grid.Column="2"
+                            Click="btnClose_Click">
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#bf3b42"/>
+                                <Setter Property="Background" Value="#fff"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#b00b13"/>
+                                        <Setter Property="Background" Value="red"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -108,16 +110,16 @@
                         </Button.Template>
                     </Button>
                 </Grid>
-                <StackPanel Width="250" Grid.Row="2" Orientation="Vertical" Margin="0,35,0,0">
+                <StackPanel Width="200" Grid.Row="2" Margin="-380,50,0,0">
 
-                    <TextBlock Text="ĐĂNG NHẬP"
-                               Foreground="#FF307CD6"
+                    <TextBlock Text="July Cafe"
+                               Foreground="White"
                                FontSize="25"
                                FontWeight="Medium"
                                FontFamily="Montserrat"
                                HorizontalAlignment="Center"/>
 
-                    <TextBlock Text="Eat - Eat More - Eat Forever"
+                    <TextBlock Text="Đồ uống - Đồ uống - Và Đồ uống"
                                Foreground="#c6d1cf"
                                FontSize="12"
                                FontWeight="Medium"
@@ -126,39 +128,18 @@
                                TextAlignment="Center"
                                Margin="0,5,0,0"/>
 
-                    <TextBlock Text="Tài Khoản"
-                               Foreground="Black"
-                               FontSize="14"
+                    <TextBlock Text="Số điện thoại"
+                               Foreground="#f4f4f3"
+                               FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"
                                TextWrapping="Wrap"
-                               Margin="0,35,0,0"/>
+                               Margin="0,10,0,0"/>
                     <TextBox x:Name="txtPhone"
                              Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Montserrat"  
-                             Foreground="Black"
-                             CaretBrush="Black"
-                             BorderBrush="Black"
-                             BorderThickness="0,0,0,1"
-                             Height="28"
-                             VerticalContentAlignment="Center"
-                             Margin="0,5,0,0"
-                             Padding="20,0,0,0" TextChanged="txtPhone_TextChanged">
-                    </TextBox>
-
-                    <TextBlock Text="Mật Khẩu"
-                               Foreground="Black"
-                               FontSize="14"
-                               FontWeight="Medium"
-                               FontFamily="Montserrat"
-                               Margin="0,15,0,0"/>
-                    <TextBox x:Name="txtPass"
-                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="13"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"
                              Foreground="Black"
                              CaretBrush="LightGray"
                              BorderBrush="DarkGray"
@@ -166,14 +147,47 @@
                              Height="28"
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
-                             Padding="20,0,0,0">
+                             Padding="20,0,0,0"
+                             Background="#FFF">
                     </TextBox>
-                    <TextBlock Text="Bạn đả sai tài khoản hoắc mật khẩu"                               
-                               Foreground="Red"
+
+                    <TextBlock Text="Mật khẩu"
+                               Foreground="#f4f4f3"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"
-                               Margin="0,15,0,0">
+                               Margin="0,10,0,0"/>
+                    <components:BindablePasswordBox 
+                    Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="#FFF"/>
+                    <!--<PasswordBox x:Name="txtPass"
+                             Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="13"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"
+                             Foreground="White"
+                             CaretBrush="LightGray"
+                             BorderBrush="DarkGray"
+                             BorderThickness="0,0,0,1"
+                             Height="28"
+                             VerticalContentAlignment="Center"
+                             Margin="0,5,0,0"
+                             Padding="20,0,0,0"
+                             Background="#567771">
+                    </PasswordBox>-->
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#FFF"
+                           FontSize="12"
+                           FontWeight="Medium"
+                           FontFamily="Montserrat"    
+                           TextWrapping="Wrap"/>
+
+                    <TextBlock Text="Login Failed"                               
+                               Foreground="Red"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Visibility" Value="Hidden"/>
@@ -188,20 +202,18 @@
                     <Button x:Name="btnLogin"
                             Command="{Binding LoginCommand}"
                             BorderThickness="0"
-                            Content="Đăng Nhập"
+                            Content="ĐĂNG NHẬP"
                             Foreground="Beige"
-                            FontSize="14"
+                            FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
-                            Grid.Column="2"
-                            Margin="0,50,0,0" Click="btnLogin_Click">
-
+                            Grid.Column="2">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="#FF307CD6"/>
+                                <Setter Property="Background" Value="#D96725"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#4c7093"/>
+                                        <Setter Property="Background" Value="#402D22"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -218,12 +230,12 @@
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="0,15,0,0">
-                        <TextBlock Text="Đăng ký tài khoản"
-                               Foreground="Black"
+                        <TextBlock Text="Quên mât khẩu ?"
+                               Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"/>
-                        <TextBlock Text="Đăng nhập lại"
+                        <TextBlock Text="Khôi phục"
                                Foreground="White"
                                FontSize="12"
                                FontWeight="Medium"
@@ -231,6 +243,13 @@
                                Cursor="Hand"
                                Margin="8,0,0,0"/>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="277,0,0,0" Grid.Row="1">
+                    <Border Height="364" CornerRadius="12">
+                        <Border.Background>
+                            <ImageBrush ImageSource="/Images/login.jpg" />
+                        </Border.Background>
+                    </Border>
                 </StackPanel>
             </Grid>
         </Border>

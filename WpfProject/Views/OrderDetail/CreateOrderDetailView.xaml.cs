@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WpfProject.Views
 {
     /// <summary>
-    /// Interaction logic for OrderView.xaml
+    /// Interaction logic for CreateOrderDetailView.xaml
     /// </summary>
-    public partial class OrderView : UserControl
+    public partial class CreateOrderDetailView : UserControl
     {
-        public OrderView()
+        public CreateOrderDetailView()
         {
             InitializeComponent();
         }

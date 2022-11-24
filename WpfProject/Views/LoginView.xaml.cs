@@ -30,22 +30,16 @@ namespace WpfProject.Views
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-        private void btnMinimize_Click(object sender, MouseButtonEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            Application.Current.Shutdown();
         }
-
-        private void txtPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-
+            this.WindowState = WindowState.Minimized;
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfProject.Views.Order
+namespace WpfProject.Views
 {
     /// <summary>
     /// Interaction logic for CreateOrderView.xaml

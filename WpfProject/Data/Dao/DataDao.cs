@@ -19,8 +19,11 @@ namespace WpfProject.Data.Dao
             return instance;
         }
         abstract public UserDao GetUserDao();
+        abstract public OrderDao GetOrderDao();
         abstract public CategoryDao GetCategoryDao();
         abstract public ProductDao GetProductDao();
+        abstract public OrderDetailDao GetOrderDetailDao();
+
 
     }
 }

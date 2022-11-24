@@ -1,15 +1,27 @@
-﻿//using FontAwesome.Sharp;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using WpfProject.Data.Dao;
+using WpfProject.Views;
 
 namespace WpfProject.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        //Fields
         private ViewModelBase _currentChildView;
-        private string _caption;
-        //private IconChar _icon;
+        public ICommand LoginCommand { get; }
+        private Visibility _IsVisible;
+        public Visibility IsVisible
+        {
+            get { return _IsVisible; }
+            set
+            {
+                _IsVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+            }
+        }
+
+
+
         public ViewModelBase CurrentChildView
         {
             get
@@ -22,31 +34,6 @@ namespace WpfProject.ViewModels
                 OnPropertyChanged(nameof(CurrentChildView));
             }
         }
-        public string Caption
-        {
-            get
-            {
-                return _caption;
-            }
-            set
-            {
-                _caption = value;
-                OnPropertyChanged(nameof(Caption));
-            }
-        }
-        //public IconChar Icon
-        //{
-        //    get
-        //    {
-        //        return _icon;
-        //    }
-        //    set
-        //    {
-        //        _icon = value;
-        //        OnPropertyChanged(nameof(Icon));
-        //    }
-        //}
-        //--> Commands
         public ICommand ShowHomeViewCommand { get; }
         public ICommand ShowUserViewCommand { get; }
         public ICommand ShowProductViewCommand { get; }
@@ -59,32 +46,51 @@ namespace WpfProject.ViewModels
             ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
             ShowCategoryViewCommand = new ViewModelCommand(ExecuteShowCategoryViewCommand);
             ShowProductViewCommand = new ViewModelCommand(ExecuteShowProductViewCommand);
+            ShowOrderViewCommand = new ViewModelCommand(ExecuteShowOrderViewCommand);
+            //ShowOrderDetailViewCommand = new ViewModelCommand(ExecuteShowOrderDetailViewCommand);
+            LoginCommand = new RelayCommand<object>(CanExecuteLogOutCommand, ExecuteLogOutCommand);
 
             //Default view
             ExecuteShowUserViewCommand(null);
             ExecuteShowCategoryViewCommand(null);
-            ExecuteShowCategoryViewCommand(null);
+            ExecuteShowProductViewCommand(null);
+            ExecuteShowOrderViewCommand(null);
+            //ExecuteShowOrderDetailViewCommand(null);
 
 
+
+
+        }
+        private void ExecuteLogOutCommand(object obj)
+        {
+                LoginView mainWindow = new LoginView();
+                mainWindow.Show();
+                IsVisible = Visibility.Hidden;    
+        }
+        private bool CanExecuteLogOutCommand(object obj)
+        {
+            return true;
         }
         private void ExecuteShowUserViewCommand(object obj)
         {
             CurrentChildView = new UserViewModel(this);
-            //Caption = "Users";
-            //Icon = IconChar.User;
         }
         private void ExecuteShowCategoryViewCommand(object obj)
         {
             CurrentChildView = new CategoryViewModel(this);
-            //Caption = "Users";
-            //Icon = IconChar.User;
         }
         private void ExecuteShowProductViewCommand(object obj)
         {
             CurrentChildView = new ProductViewModel(this);
-            //Caption = "Users";
-            //Icon = IconChar.User;
         }
+        private void ExecuteShowOrderViewCommand(object obj)
+        {
+            CurrentChildView = new OrderViewModel(this);
+        }
+        //private void ExecuteShowOrderDetailViewCommand(object obj)
+        //{
+        //    CurrentChildView = new OrderDetailViewModel(this);
+        //}
 
     }
 }

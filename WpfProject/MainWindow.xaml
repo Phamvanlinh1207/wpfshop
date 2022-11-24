@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Height="720" Width="1080" WindowStartupLocation="CenterScreen" AllowsTransparency="True"
+        Height="600" Width="1080" WindowStartupLocation="CenterScreen" AllowsTransparency="True"
         Background="Transparent" WindowStyle="None"
         xmlns:local="clr-namespace:WpfProject.Views"
-        xmlns:viewModel="clr-namespace:WpfProject.ViewModels">
+        xmlns:viewModel="clr-namespace:WpfProject.ViewModels" 
+        Visibility="{Binding IsVisible, Mode=TwoWay}">
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
@@ -33,7 +34,10 @@
         <DataTemplate DataType="{x:Type viewModel:CreateCategoryViewModel}">
             <local:CreateCategoryView />
         </DataTemplate>
-       
+        <DataTemplate DataType="{x:Type viewModel:EditCategoryViewModel}">
+            <local:EditCategoryView />
+        </DataTemplate>
+
         <!--End User-->
 
         <!--Begin User-->
@@ -43,8 +47,36 @@
         <DataTemplate DataType="{x:Type viewModel:CreateProductViewModel}">
             <local:CreateProductView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:EditProductViewModel}">
+            <local:EditProductView />
+        </DataTemplate>
 
         <!--End User-->
+
+        <!--Begin User-->
+        <DataTemplate DataType="{x:Type viewModel:OrderViewModel}">
+            <local:OrderView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CreateOrderViewModel}">
+            <local:CreateOrderView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:EditOrderViewModel}">
+             <local:EditOrderView />
+         </DataTemplate>
+
+        <!--End User-->
+
+        <!--Begin User-->
+        <DataTemplate DataType="{x:Type viewModel:OrderDetailViewModel}">
+            <local:OrderDetailView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CreateOrderDetailViewModel}">
+            <local:CreateOrderDetailView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:EditOrderDetailViewModel}">
+            <local:EditOrderDetailView />
+        </DataTemplate>
     </Window.Resources>
 
     
@@ -61,6 +93,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
+                    
                 </Grid.RowDefinitions>
 
                 <!--Menu Icon-->
@@ -68,23 +101,23 @@
                     <Icon:PackIconMaterial Kind="Menu" Width="15" Height="15" />
                 </Button>
 
-                <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
+                <Border Grid.Row="1" Background="#591602" CornerRadius="0 50 0 30">
                     <DockPanel>
                         <!--Menu Logo-->
                         <Border Width="80" Height="80" Padding="3" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
-                            <!--<Ellipse>
+                            <Ellipse>
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="/Images/p1.jpg"/>
+                                    <ImageBrush ImageSource="/Images/p2.jpg"/>
                                 </Ellipse.Fill>
-                            </Ellipse>-->
+                            </Ellipse>
                         </Border>
 
                         <!--Menu Titles-->
-                        <TextBlock Text="DrugnStore" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="5 25 0 10" TextAlignment="Center"/>
+                        <TextBlock Text="July Cafe" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="5 25 0 10" TextAlignment="Center"/>
                         <TextBlock Text="Lĩnh - Nguyên - Phi" Foreground="#D0BFFF" FontSize="14" FontWeight="SemiBold" DockPanel.Dock="Top" TextAlignment="Center"/>
 
                         <!--Menu Seprator-->
-                        <Separator Margin="25" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+                        <Separator Margin="25" Background="#663300" DockPanel.Dock="Top" Height="0.8"/>
 
                         <!--Menu Buttons-->
                         <StackPanel DockPanel.Dock="Top" >
@@ -117,7 +150,7 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}">
+                            <Button Style="{StaticResource menuButton}" Command="{Binding ShowOrderViewCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ForumOutline" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="Order"/>
@@ -126,10 +159,10 @@
 
                         </StackPanel>
 
-                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
+                        <Button Click="btnClose_Click" Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
                             <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>
-                                <TextBlock Text="Logout"/>
+                                <Icon:PackIconMaterial Kind="ExitRun" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="EXIT"/>
                             </StackPanel>
                         </Button>
 
@@ -137,7 +170,7 @@
                 </Border>
 
             </Grid>
-            <ContentControl  Content="{Binding CurrentChildView}" Grid.Column="1" Margin="25" />
+            <ContentControl  Content="{Binding CurrentChildView}" Grid.Column="1" Margin="25,0,25,25" />
             <!--Main Section-->
             
 

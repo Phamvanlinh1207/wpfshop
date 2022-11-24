@@ -50,7 +50,7 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#7B5CD6" />
+                    <Setter Property="Background" Value="#402D22" />
                     <Setter Property="Foreground" Value="#ffffff" />
                 </Trigger>
             </Style.Triggers>
@@ -212,8 +212,8 @@
 
 
         <Style x:Key="gridEditButton" TargetType="Button">
-            <Setter Property="Background" Value="#512DA8" />
-            <Setter Property="BorderBrush" Value="#4A148C" />
+            <Setter Property="Background" Value="#591902" />
+            <Setter Property="BorderBrush" Value="#402D22" />
             <Setter Property="Foreground" Value="#ffffff" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -228,7 +228,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#673AB7" />
+                    <Setter Property="Background" Value="#402D22" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -351,7 +351,7 @@
 
         <Style x:Key="DataGridRowStyle1" TargetType="{x:Type DataGridRow}">
             <Setter Property="Margin" Value="0 4 0 0" />
-            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Background" Value="#660033"/>
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
             <Setter Property="ValidationErrorTemplate">

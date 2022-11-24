@@ -37,6 +37,7 @@ namespace WpfProject.Data.Impl
             List<OrderDetail> orderDetailList = query.ToList<OrderDetail>();
             return orderDetailList;
         }
+        
 
         public OrderDetail findById(int id)
         {
@@ -52,11 +53,18 @@ namespace WpfProject.Data.Impl
         public void update(OrderDetail orderDetail)
         {
             OrderDetail find = db.OrderDetails.Single(us => us.Id == orderDetail.Id);
-            find.OrderCode = orderDetail.OrderCode;
+            find.OrderId = orderDetail.OrderId;
             find.ProductId = orderDetail.ProductId;
             find.Quantity = orderDetail.Quantity;
             find.Price = orderDetail.Price;
             db.SubmitChanges();
+        }
+
+        public List<OrderDetail> findByOrder(int orderId)
+        {
+            var query = from orderDetail in db.GetTable<OrderDetail>() where orderDetail.OrderId == orderId select orderDetail;
+            List<OrderDetail> orderDetailList = query.ToList<OrderDetail>();
+            return orderDetailList;
         }
     }
 }

@@ -39,6 +39,7 @@ namespace WpfProject.Data.Impl
             catch (Exception ex) { }
             return null;
         }
+ 
 
         public List<User> findAll()
         {
@@ -61,9 +62,10 @@ namespace WpfProject.Data.Impl
         public void update(User user)
         {
             User find = db.Users.Single(us => us.Id == user.Id);
+            find.Name = user.Name;
             find.Phone = user.Phone;
-            find.Orders = user.Orders;
             find.Password  = user.Password;
+            find.Role = user.Role;
             db.SubmitChanges();
         }
     }
